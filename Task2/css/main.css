@@ -895,7 +895,7 @@ p.footer-element {
 }
 }
 
-@media screen and (min-width: 900px) and (max-height: 720px) and (min-height: 678px) {
+@media screen and (min-width: 900px) and (max-height: 720px) and (min-height: 378px) {
     footer {
         display: none;
     }
