@@ -246,7 +246,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
                         controlId = "templateLight";
                         break;
                     case "time": 
-                        controlId = "templateLight";
+                        controlId = "templateTime";
                         break;
                     default: console.log("Error there");
                 }
@@ -260,49 +260,52 @@ document.addEventListener("DOMContentLoaded", function(event) {
                 popupBox.insertBefore(popup, popupBox.firstChild);
                 popupBox.querySelector(".box-content").appendChild(control);
                 
-                activatePopupSlider(popupBox.querySelector(".gradientTouch"));
+                if (controlId != "templateTime") {
 
-                var popups = [].slice.call(document.getElementsByClassName("popup-controlls")),
-                    activePopup;
-                popups.forEach(function (element) {
-                    if (!element.classList.contains("hide")) {
-                        activePopup = element;
-                    }
-                });
-
-                var popupFilters = [].slice.call(activePopup.getElementsByTagName("li"));
-                popupFilters.forEach(function (element) {
-                    element.addEventListener("click", function () {
-
-                        setFilterActiveOnly(element, false);
-                        var changes, isChanges = true;
-                        switch (element.getAttribute("typeid")) {
-                            case "lightDay":
-                                changes = "80%";
-                                break;
-                            case "LightEvening":
-                                changes = "40%";
-                                break;
-                            case "LightEarly":
-                                changes = "30%";
-                                break;
-                            case "FilterNotOk":
-                                changes = "20%";
-                                break;
-                            case "FilterOk":
-                                changes = "60%";
-                                break;
-                            case "FilterXXX":
-                                changes = "80%";
-                                break;
-                            default:
-                                isChanges = false;
-                        }
-                        if (isChanges) {
-                            setElementTemplatePosition(popupBox.querySelector(".gradientTouch"), changes);
+                    activatePopupSlider(popupBox.querySelector(".gradientTouch"));
+    
+                    var popups = [].slice.call(document.getElementsByClassName("popup-controlls")),
+                        activePopup;
+                    popups.forEach(function (element) {
+                        if (!element.classList.contains("hide")) {
+                            activePopup = element;
                         }
                     });
-                });
+    
+                    var popupFilters = [].slice.call(activePopup.getElementsByTagName("li"));
+                    popupFilters.forEach(function (element) {
+                        element.addEventListener("click", function () {
+    
+                            setFilterActiveOnly(element, false);
+                            var changes, isChanges = true;
+                            switch (element.getAttribute("typeid")) {
+                                case "lightDay":
+                                    changes = "80%";
+                                    break;
+                                case "LightEvening":
+                                    changes = "40%";
+                                    break;
+                                case "LightEarly":
+                                    changes = "30%";
+                                    break;
+                                case "FilterNotOk":
+                                    changes = "20%";
+                                    break;
+                                case "FilterOk":
+                                    changes = "60%";
+                                    break;
+                                case "FilterXXX":
+                                    changes = "80%";
+                                    break;
+                                default:
+                                    isChanges = false;
+                            }
+                            if (isChanges) {
+                                setElementTemplatePosition(popupBox.querySelector(".gradientTouch"), changes);
+                            }
+                        });
+                    });
+                }
 
                 popupBox.style.left = rect.left.toString() + "px";
                 popupBox.style.height = rect.height.toString() + "px";

@@ -553,6 +553,29 @@ p.footer-element {
     background-color: #F2F1F0;
 }
 
+.popup-time {
+    width: 100%;
+    min-height: 300px;
+    position: relative;
+}
+
+.popup-time-container {
+    width: 100%;
+    height: 300px;
+    background: url("../img/Oval@1xOff.svg") no-repeat 50%;
+}
+
+.popup-time-touch {
+    width: 304px;
+    height: 304px;
+    margin: auto;
+    font-family: Arial-BoldMT;
+    text-align: center;
+    font-size: 66px;
+    line-height: 300px;
+    background: url("../img/background.svg") no-repeat 50%;
+}
+
 .gradient {
     box-sizing: border-box;
     position: relative;
