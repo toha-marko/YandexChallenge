@@ -365,14 +365,14 @@ document.addEventListener("DOMContentLoaded", function(event) {
                 pos1 = pos2 - e.clientY;
                 pos2 = e.clientY;
                 // set the element's new position:
-                var dest = checkMoveBorders((elmnt.offsetTop - pos1));
-                elmnt.style.top = dest  + "px";
+                var dest = checkMoveBorders((elmnt.offsetTop + pos1));
+                elmnt.style.top = dest + "px";
             } else {            
                 pos1 = pos2 - e.clientX;
                 pos2 = e.clientX;
                 // set the element's new position:
                 var dest = checkMoveBorders((elmnt.offsetLeft - pos1));
-                elmnt.style.left = dest  + "px";
+                elmnt.style.left = dest + "px";
             }
         }
 
@@ -404,8 +404,9 @@ document.addEventListener("DOMContentLoaded", function(event) {
                 pos2 = e.changedTouches[0].clientY;
     
                 // set the element's new position:
-                var dest = checkMoveBorders((elmnt.offsetTop - pos1));
-                elmnt.style.top = dest  + "px";
+                var dest = checkMoveBorders((elmnt.offsetLeft + pos1));
+                console.log(dest);
+                elmnt.style.left = dest + "px";
             } else {
 
                 pos1 = pos2 - e.changedTouches[0].clientX;
@@ -413,7 +414,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     
                 // set the element's new position:
                 var dest = checkMoveBorders((elmnt.offsetLeft - pos1));
-                elmnt.style.left = dest  + "px";
+                elmnt.style.left = dest + "px";
             }
         }
 
@@ -452,7 +453,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
         event.stopPropagation();
     });
 
-    var isMobileView = false;
+    var isMobileView = window.innerWidth > 640 ? false : true;
     window.addEventListener("resize", function() {
         if (window.innerWidth > 640) {
             tweakPanels();
