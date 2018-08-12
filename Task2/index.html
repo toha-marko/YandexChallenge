@@ -240,14 +240,27 @@
         <div class="popup-container-box" id="popupBox">
             <div id="templateLight" class="popup-controlls hide">
                 <ul class="panel3-filter">
-                    <li id="FilterAll" class="panel3-filter-all">Вручную
-                    </li><li id="FilterKitchen">Дневной свет                    
-                    </li><li id="FilterRoom">Вечерний свет                    
-                    </li><li id="FilterLamps">Рассвет</li>
+                    <li typeid="lightManual" class="panel3-filter-active">Вручную
+                    </li><li typeid="lightDay">Дневной свет                    
+                    </li><li typeid="LightEvening">Вечерний свет                    
+                    </li><li typeid="LightEarly">Рассвет</li>
                 </ul>
                 <div class="gradient">
                     <img src="img/icon_sun_min.svg" class="svg svg-gradient">
                     <img src="img/icon_sun_max.svg" class="svg svg-gradient svg-gradient-r">
+                    <div class="gradientTouch"></div>
+                </div>
+            </div>
+            <div id="templateTemp" class="popup-controlls hide">
+                <ul class="panel3-filter">
+                    <li typeid="FilterManual" class="panel3-filter-active">Вручную
+                    </li><li typeid="FilterNotOk">Холодно                   
+                    </li><li typeid="FilterOk">Тепло               
+                    </li><li typeid="FilterXXX">Жара</li>
+                </ul>
+                <div class="gradient gradient-temperature">
+                    <span class="svg svg-gradient">-10</span>
+                    <span class="svg svg-gradient svg-gradient-r">+30</span>
                     <div class="gradientTouch"></div>
                 </div>
             </div>

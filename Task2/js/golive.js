@@ -148,16 +148,27 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
     // -- Panel 3 Filters
 
-    FilterAll.addEventListener("click", function() {
-        if (this.classList.contains("panel3-filter-active")) {
-            this.classList.remove("panel3-filter-active");
+    function setFilterActiveOnly (button, alwaysOn) {
+        if ((button.classList.contains("panel3-filter-active"))&&(alwaysOn == false)) {
+            button.classList.remove("panel3-filter-active");
         } else {
-            this.classList.add("panel3-filter-active");
-            FilterKitchen.classList.remove("panel3-filter-active");
-            FilterRoom.classList.remove("panel3-filter-active");
-            FilterLamps.classList.remove("panel3-filter-active");
-            FilterCameras.classList.remove("panel3-filter-active");
+            button.classList.add("panel3-filter-active");
+            
+            var sibling = button.nextElementSibling;
+            while (sibling !== null) {
+                sibling.classList.remove("panel3-filter-active");
+                sibling = sibling.nextElementSibling;
+            }
+            sibling = button.previousElementSibling;
+            while (sibling !== null) {
+                sibling.classList.remove("panel3-filter-active");
+                sibling = sibling.previousElementSibling;
+            }
         }
+    }
+
+    FilterAll.addEventListener("click", function() {
+        setFilterActiveOnly(this, false);
     });
     FilterKitchen.addEventListener("click", function() {
         if (this.classList.contains("panel3-filter-active")) {
@@ -217,7 +228,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
         buttonClose.addEventListener("click", eventPopupListener); 
         buttonOk.addEventListener("click", eventPopupOkListener);
 
-        elements.forEach(element => {
+        elements.forEach( function(element) {
             element.addEventListener("click", function () {
 
                 currentBox = element;
@@ -229,7 +240,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
                 switch (type) {
                     case "temp":
-                        controlId = "templateLight";
+                        controlId = "templateTemp";
                         break;
                     case "light":
                         controlId = "templateLight";
@@ -250,6 +261,49 @@ document.addEventListener("DOMContentLoaded", function(event) {
                 popupBox.querySelector(".box-content").appendChild(control);
                 
                 activatePopupSlider(popupBox.querySelector(".gradientTouch"));
+
+                var popups = [].slice.call(document.getElementsByClassName("popup-controlls")),
+                    activePopup;
+                popups.forEach(function (element) {
+                    if (!element.classList.contains("hide")) {
+                        activePopup = element;
+                    }
+                });
+
+                var popupFilters = [].slice.call(activePopup.getElementsByTagName("li"));
+                popupFilters.forEach(function (element) {
+                    element.addEventListener("click", function () {
+
+                        setFilterActiveOnly(element, false);
+                        var changes, isChanges = true;
+                        switch (element.getAttribute("typeid")) {
+                            case "lightDay":
+                                changes = "80%";
+                                break;
+                            case "LightEvening":
+                                changes = "40%";
+                                break;
+                            case "LightEarly":
+                                changes = "30%";
+                                break;
+                            case "FilterNotOk":
+                                changes = "20%";
+                                break;
+                            case "FilterOk":
+                                changes = "60%";
+                                break;
+                            case "FilterXXX":
+                                changes = "80%";
+                                break;
+                            default:
+                                isChanges = false;
+                        }
+                        if (isChanges) {
+                            setElementTemplatePosition(popupBox.querySelector(".gradientTouch"), changes);
+                        }
+                    });
+                });
+
                 popupBox.style.left = rect.left.toString() + "px";
                 popupBox.style.height = rect.height.toString() + "px";
                 popupBox.style.top = rect.top.toString() + "px";
@@ -262,6 +316,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
                         popupBox.style.top = "calc(50% - 160px)";  
                         popupBox.classList.add('popup-container-box-show');
                         popupBox.firstChild.style.flexDirection = "column";
+                        popupBox.firstChild.style.backgroundColor = "#FFFFFF";
                         
                         popupBox.querySelector(".box-content").style.padding = "25px";
                         var title = popupBox.querySelector("h3");
@@ -287,6 +342,9 @@ document.addEventListener("DOMContentLoaded", function(event) {
     };
 
     function dragElementX(elmnt) {
+
+        var filter = elmnt.parentElement.previousElementSibling.children[0];
+
         var pos1 = 0, pos2 = 0;
         elmnt.onmousedown = dragMouseDown;
         elmnt.ontouchstart = dragTouchStart;
@@ -303,11 +361,19 @@ document.addEventListener("DOMContentLoaded", function(event) {
         function elementDrag(e) {
             e = e || window.event;
             // calculate the new cursor position:
-            pos1 = pos2 - e.clientX;
-            pos2 = e.clientX;
-            // set the element's new position:
-            var dest = checkMoveBorders((elmnt.offsetLeft - pos1));
-            elmnt.style.left = dest  + "px";
+            if (isMobileView) {
+                pos1 = pos2 - e.clientY;
+                pos2 = e.clientY;
+                // set the element's new position:
+                var dest = checkMoveBorders((elmnt.offsetTop - pos1));
+                elmnt.style.top = dest  + "px";
+            } else {            
+                pos1 = pos2 - e.clientX;
+                pos2 = e.clientX;
+                // set the element's new position:
+                var dest = checkMoveBorders((elmnt.offsetLeft - pos1));
+                elmnt.style.left = dest  + "px";
+            }
         }
 
         function closeDragElement() {
@@ -318,26 +384,42 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
         function dragTouchStart(e) {
             e = e || window.event;
-            pos2 = e.changedTouches[0].clientX;
+            
+            if (isMobileView) {
+                pos2 = e.changedTouches[0].clientY;
+            } else {
+                pos2 = e.changedTouches[0].clientX;
+            }
 
-            document.ontouchend =  closeTouchDragElement;
-            document.ontouchmove = elementTouchDrag;
+            elmnt.ontouchend =  closeTouchDragElement;
+            elmnt.ontouchmove = elementTouchDrag;
         }
 
         function elementTouchDrag(e) {
             e = e || window.event;
             // calculate the new cursor position:
-            pos1 = pos2 - e.changedTouches[0].clientX;
-            pos2 = e.changedTouches[0].clientX;
+            if (isMobileView) {
+                
+                pos1 = pos2 - e.changedTouches[0].clientY;
+                pos2 = e.changedTouches[0].clientY;
+    
+                // set the element's new position:
+                var dest = checkMoveBorders((elmnt.offsetTop - pos1));
+                elmnt.style.top = dest  + "px";
+            } else {
 
-            // set the element's new position:
-            var dest = checkMoveBorders((elmnt.offsetLeft - pos1));
-            elmnt.style.left = dest  + "px";
+                pos1 = pos2 - e.changedTouches[0].clientX;
+                pos2 = e.changedTouches[0].clientX;
+    
+                // set the element's new position:
+                var dest = checkMoveBorders((elmnt.offsetLeft - pos1));
+                elmnt.style.left = dest  + "px";
+            }
         }
 
         function closeTouchDragElement() {
-            document.ontouchend = null;
-            document.ontouchmove = null;
+            elmnt.ontouchend = null;
+            elmnt.ontouchmove = null;
         }
 
         function checkMoveBorders(posX) {
@@ -349,15 +431,19 @@ document.addEventListener("DOMContentLoaded", function(event) {
             } else if (pos <= 60) {
                 return 0;
             }
+
+            setFilterActiveOnly(filter, true);
             return posX;
         }
     }
 
+    function setElementTemplatePosition(elmnt, pos) {s
+        elmnt.style.left = pos;
+    }
+
     function activatePopupSlider (element) {
-        if (window.innerWidth > 640) {
-            dragElementX(element);
-        }
-    };
+        dragElementX(element);
+    }
 
     tweakPanels();
     createPopups();
@@ -366,9 +452,12 @@ document.addEventListener("DOMContentLoaded", function(event) {
         event.stopPropagation();
     });
 
+    var isMobileView = false;
     window.addEventListener("resize", function() {
         if (window.innerWidth > 640) {
             tweakPanels();
+        } else {
+            isMobileView = true;
         }
     }, true);
 });
