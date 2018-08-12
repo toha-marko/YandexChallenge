@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="css/main.css">
+    <title>Yandex Task 2</title>
+</head>
+
+<body>
+    <header>
+        <a href="#" class="header-image"></a><nav>
+            <a href="#" class="header-element header-element-active">Сводка</a>
+            <a href="#" class="header-element">Устройства</a>
+            <a href="#" class="header-element">Сценарии</a>
+        </nav>
+        <div class="header-menu"></div>
+    </header>
+    <div class="content">
+        <div class="panel">
+            <h2>Главное</h2>
+            <div class="box-container box-container-papa">
+                <div class="box-papa">                    
+                    <div class="box-papa-content">
+                        <h1>Привет, Геннадий!</h1>
+                        <p>Двери и окна закрыты, сигнализация включена. Да и вообще, все прекрасно.</p>
+                        <div class="box-papa-content-weather">
+                            <p class="box-papa-content-weather-pretitle">Дома</p>
+                            <p class="box-papa-content-weather-title">+23</p>
+                        </div><div class="box-papa-content-weather">
+                            <p class="box-papa-content-weather-pretitle">За окном</p>
+                            <p class="box-papa-content-weather-title">+19 
+                                <img src="img/cloud-drizzle.svg" alt="Тучки" class="svg-weather">                                  
+                            </p>
+                        </div>
+                    </div><div class="box-papa-content-scroll-container">
+                        <img src="img/ M.svg" alt="up" class="svg-list svg-doubleArrow-reversed svg-list-active hide" id="ListaArowUp">
+                        <img src="img/ M.svg" alt="down" class="svg-list svg-doubleArrow svg-list-active hide" id="ListArrowDown">   
+                        <div class="box-papa-content-scroll" id="Panel1ContentScroll">
+                            <div class="box-papa-content-list" id="Panel1Content">
+                                <div class="box-container">
+                                    <div class="box" boxtype="temp">
+                                        <img src="img/icon_temperature_2.svg" alt="вкл" class="svg-list svg-boxIcon">
+                                        <img src="img/icon_temperature.svg" alt="выкл" class="svg-list svg-boxIcon hide">
+                                        <div class="box-content">
+                                            <h3>Philips Cooler</h3>
+                                            <p>Начнет охлаждать в 16:30</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="box-container">
+                                    <div class="box" boxtype="light">
+                                        <img src="img/icon_sun_2.svg" alt="вкл" class="svg-list svg-boxIcon">
+                                        <img src="img/icon_sun.svg" alt="выкл" class="svg-list svg-boxIcon hide">
+                                        <div class="box-content">
+                                            <h3>Xiaomi Yeelight LED Smart Bulb</h3>
+                                            <p>Включится в 17:00</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="box-container">
+                                    <div class="box" boxtype="light">
+                                        <img src="img/icon_sun_2.svg" alt="вкл" class="svg-list svg-boxIcon hide">
+                                        <img src="img/icon_sun.svg" alt="выкл" class="svg-list svg-boxIcon">
+                                        <div class="box-content">
+                                            <h3>Xiaomi Yeelight LED Smart Bulb</h3>
+                                            <p>Выключится в 18:00</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="box-container">
+                                    <div class="box" boxtype="temp">
+                                        <img src="img/icon_temperature_2.svg" alt="вкл" class="svg-list svg-boxIcon hide">
+                                        <img src="img/icon_temperature.svg" alt="выкл" class="svg-list svg-boxIcon">
+                                        <div class="box-content">
+                                            <h3>Philips Cooler</h3>
+                                            <p>Перестанет охлаждать в 19:30</p>
+                                        </div>
+                                    </div>
+                                </div>                            
+                            </div>
+                        </div>
+                    </div>                 
+                </div>
+            </div>
+        </div><div class="panel">
+            <h2>Избранные сценарии</h2>
+            <img src="img/arrow-left.svg" alt="Влево" class="svg-list svg-arrowLeft" id="Panel2Left">
+            <img src="img/arrow-left.svg" alt="Вправо" class="svg-list svg-arrowLeft-reversed" id="Panel2Right">
+            <div class="panel2-content">
+                <div class="panel2-content-container-scroll" id="Panel2ContentScroll">
+                    <div class="panel2-content-container" id="Panel2Content">
+                        <div class="box-container">
+                            <div class="box" boxtype="light">
+                                <img src="img/icon_sun_2.svg" alt="вкл" class="svg-list svg-boxIcon">
+                                <img src="img/icon_sun.svg" alt="выкл" class="svg-list svg-boxIcon hide">
+                                <div class="box-content">
+                                    <h3>Выключить весь свет в доме и во дворе</h3>
+                                    <p></p>
+                                </div>
+                            </div>
+                        </div><div class="box-container">
+                            <div class="box" boxtype="time">
+                                <img src="img/icon_scheduled.svg" alt="таймер" class="svg-list svg-boxIcon">
+                                <div class="box-content">
+                                    <h3>Я ухожу</h3>
+                                    <p></p>
+                                </div>
+                            </div>
+                        </div><div class="box-container">
+                            <div class="box" boxtype="light">
+                                <img src="img/icon_sun_2.svg" alt="вкл" class="svg-list svg-boxIcon">
+                                <img src="img/icon_sun.svg" alt="выкл" class="svg-list svg-boxIcon hide">
+                                <div class="box-content">
+                                    <h3>Выключить свет в коридоре</h3>
+                                    <p></p>
+                                </div>
+                            </div>
+                        </div><div class="box-container">
+                            <div class="box" boxtype="temp">
+                                <img src="img/icon_temperature_2.svg" alt="вкл" class="svg-list svg-boxIcon hide">
+                                <img src="img/icon_temperature.svg" alt="выкл" class="svg-list svg-boxIcon">
+                                <div class="box-content">
+                                    <h3>Набрать горячую ванну</h3>
+                                    <p>Начнется в 18:00</p>
+                                </div>
+                            </div>
+                        </div><div class="box-container">
+                            <div class="box" boxtype="time">
+                                <img src="img/icon_scheduled.svg" alt="таймер" class="svg-list svg-boxIcon">
+                                <div class="box-content">
+                                    <h3>Я ухожу</h3>
+                                    <p></p>
+                                </div>
+                            </div>
+                        </div><div class="box-container">
+                            <div class="box" boxtype="light">
+                                <img src="img/icon_sun_2.svg" alt="вкл" class="svg-list svg-boxIcon">
+                                <img src="img/icon_sun.svg" alt="выкл" class="svg-list svg-boxIcon hide">
+                                <div class="box-content">
+                                    <h3>Выключить свет в коридоре</h3>
+                                    <p></p>
+                                </div>
+                            </div>
+                        </div><div class="box-container">
+                            <div class="box" boxtype="temp">
+                                <img src="img/icon_temperature_2.svg" alt="вкл" class="svg-list svg-boxIcon hide">
+                                <img src="img/icon_temperature.svg" alt="выкл" class="svg-list svg-boxIcon">
+                                <div class="box-content">
+                                    <h3>Набрать горячую ванну</h3>
+                                    <p>Начнется в 18:00</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div><div class="panel panel-wide">
+            <h2>Избранные устройства</h2>
+            <img src="img/arrow-left.svg" alt="Влево" class="svg-list svg-arrowLeft" id="Panel3Left">
+            <img src="img/arrow-left.svg" alt="Вправо" class="svg-list svg-arrowLeft-reversed" id="Panel3Right">
+            <ul class="panel3-filter">
+                <li id="FilterAll" class="panel3-filter-all">Все
+                </li><li id="FilterKitchen">Кухня                    
+                </li><li id="FilterRoom">Зал                    
+                </li><li id="FilterLamps">Лампочки                    
+                </li><li id="FilterCameras">Камеры</li>
+            </ul>
+            <div class="panel3-content">
+                <div class="panel3-content-container" id="Panel3Content">
+                    <div class="box-container">
+                        <div class="box" boxtype="light">
+                            <img src="img/icon_sun_2.svg" alt="вкл" class="svg-list svg-boxIcon">
+                            <img src="img/icon_sun.svg" alt="выкл" class="svg-list svg-boxIcon hide">
+                            <div class="box-content">
+                                <h3>Xiaomi Yeelight LED Smart Bulb</h3>
+                                <p>Включено</p>
+                            </div>
+                        </div>
+                    </div><div class="box-container">
+                        <div class="box" boxtype="light">
+                            <img src="img/icon_sun_2.svg" alt="вкл" class="svg-list svg-boxIcon">
+                            <img src="img/icon_sun.svg" alt="выкл" class="svg-list svg-boxIcon hide">
+                            <div class="box-content">
+                                <h3>D-Link Omna 180 Cam</h3>
+                                <p>Включится в 17:00</p>
+                            </div>
+                        </div>
+                    </div><div class="box-container">
+                        <div class="box" boxtype="temp">
+                            <img src="img/icon_temperature_2.svg" alt="вкл" class="svg-list svg-boxIcon">
+                            <img src="img/icon_temperature.svg" alt="выкл" class="svg-list svg-boxIcon hide">
+                            <div class="box-content">
+                                <h3>Elgato Eve Degree Connected</h3>
+                                <p>Выключено до 18:00</p>
+                            </div>
+                        </div>
+                    </div><div class="box-container">
+                        <div class="box" boxtype="light">
+                            <img src="img/icon_sun_2.svg" alt="вкл" class="svg-list svg-boxIcon hide">
+                            <img src="img/icon_sun.svg" alt="выкл" class="svg-list svg-boxIcon">
+                            <div class="box-content">
+                                <h3>D-Link Omna 180 Cam</h3>
+                                <p>Включится в 17:00</p>
+                            </div>
+                        </div>
+                    </div><div class="box-container">
+                        <div class="box" boxtype="temp">
+                            <img src="img/icon_temperature_2.svg" alt="вкл" class="svg-list svg-boxIcon hide">
+                            <img src="img/icon_temperature.svg" alt="выкл" class="svg-list svg-boxIcon">
+                            <div class="box-content">
+                                <h3>Elgato Eve Degree Connected</h3>
+                                <p>Выключено до 18:00</p>
+                            </div>
+                        </div>
+                    </div><div class="box-container">
+                        <div class="box" boxtype="temp">
+                            <img src="img/icon_temperature_2.svg" alt="вкл" class="svg-list svg-boxIcon hide">
+                            <img src="img/icon_temperature.svg" alt="выкл" class="svg-list svg-boxIcon">
+                            <div class="box-content">
+                                <h3>Elgato Eve Degree Connected</h3>
+                                <p>Выключено до 18:00</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer>
+        <a href="#" class="footer-element">Помощь</a>
+        <a href="#" class="footer-element">Обратная связь</a>
+        <a href="#" class="footer-element">Разработчикам</a>
+        <a href="#" class="footer-element">Условия использования</a>
+        <p class="footer-element">© 2001—2018 ООО «Яндекс»</p>
+    </footer>
+    <div class="popup-container hide" id="popup">
+        <div class="popup-container-box" id="popupBox">
+            <div id="templateLight" class="popup-controlls hide">
+                <ul class="panel3-filter">
+                    <li id="FilterAll" class="panel3-filter-all">Вручную
+                    </li><li id="FilterKitchen">Дневной свет                    
+                    </li><li id="FilterRoom">Вечерний свет                    
+                    </li><li id="FilterLamps">Рассвет</li>
+                </ul>
+                <div class="gradient">
+                    <img src="img/icon_sun_min.svg" class="svg svg-gradient">
+                    <img src="img/icon_sun_max.svg" class="svg svg-gradient svg-gradient-r">
+                    <div class="gradientTouch"></div>
+                </div>
+            </div>
+            <div class="button hide" id="buttonOk">Применить</div><div class="button hide" id="buttonClose">Закрыть</div>
+        </div>
+    </div>
+    <script src="js/golive.js"></script>
+</body>
+
+</html>
