@@ -31,9 +31,6 @@ loadJSON(function(json) {
     console.log("There is no power information. ERROR");
     return;
   }
-
-  document.body.innerHTML += "<h1>INPUT:</h1>";
-  document.body.innerHTML += JSON.stringify(json);
   
   var day = [];
   (function sortInput () {
@@ -129,10 +126,11 @@ loadJSON(function(json) {
     this.setNextHour = function() {
       let newValue = hoursSchedule[actualHourIndex + 1];
       if (newValue != undefined) {
-        freeHourInfo.itemHour = newValue.hour;
         actualHourIndex += 1;
+        freeHourInfo.itemHour = newValue.hour;
+        freeHourInfo.restWatt = json.maxPower;
+        freeHourInfo.cost = hoursSchedule[actualHourIndex].hourCost;
       } else {
-        console.log("Hours are done");
         return false;
       }
       return true;
@@ -241,8 +239,8 @@ loadJSON(function(json) {
     
     let devicesUniversalTimeOut = () => devicesUniversal.filter(device => ((device.duration > 0) && (device.duration == hourScount))),
         devicesUniversalTimeOutAfterHour = () => devicesUniversal.filter(device => ((device.duration > 0) && (device.duration == (hourScount - 1)))),
-        devicesUniversalRest = () => devicesUniversal.filter(device => ((device.duration > 0) && (device.duration < hourScount) && 
-        (!toDay.getHours().includes(device.id)) && (!toNight.getHours().includes(device.id))));
+        devicesUniversalRest = () => devicesUniversal.filter(device => ((device.duration > 0) && (device.duration < hourScount - 1) && 
+        (!toDay.checkDeviceInCurrentHour(device.id)) && (!toNight.checkDeviceInCurrentHour(device.id))));
 
     function addUniversalDevicesAndCheckForHours (devicesUniversal, dayTimeChooser) { // Check for devices working long hours, and comparing to left ours in our daytime
       
@@ -279,62 +277,65 @@ loadJSON(function(json) {
     let increment = 2,
         twoHoursModeDevices = devicesUniversalTimeOutAfterHour,
         oneTimeMode = false,
-        isDayOff = false,
-        isNightOff = false;
+        isFilterOneOff = false,
+        isFilterTwoOff = false;
 
     while (hourScount > 0) {      
 
       devicesDay = devicesDay.filter(device => device.duration != 0);
       devicesNight = devicesNight.filter(device => device.duration != 0);
-      
-      if (!isDayOff) {
-        addUniversalDevicesAndCheckForHours(devicesUniversalTimeOut(), toDay); 
-      }
 
-      if (!isNightOff) {
-        addUniversalDevicesAndCheckForHours(twoHoursModeDevices(), toNight); 
-      }
-      
-      
-      // if (devicesDay.count > 0) {
-        
-        //   maxEffectiveUsageInOur(devicesDay, toDay.getFreeHourInfo().restWatt).forEach(function (device) { //add devices for Day for free power for current hour
-        //     toDay.addDeviceForHour(device);
-        //   });
-        // }
-        
-        // if (devicesNight.count > 0) {
-          
-        //   maxEffectiveUsageInOur(devicesNight, toNight.getFreeHourInfo().restWatt).forEach(function (device) { //add devices for Night for free power for current hour
-        //     toNight.addDeviceForHour(device);
-        //   });
-        // };
-          
       let firstTime = toDay, 
       secondTime = toNight;
-      
+
       if (firstTime.getFreeHourInfo().cost > secondTime.getFreeHourInfo().cost) {
         secondTime = toDay;
         firstTime = toNight;
       }        
       
-      maxEffectiveUsageInOur(devicesUniversalRest(), firstTime.getFreeHourInfo().restWatt).forEach(function (device) { //add universal devices if we have a free power
-        firstTime.addDeviceForHour(device);
-      });
-      // maxEffectiveUsageInOur(devicesUniversalRest(), secondTime.getFreeHourInfo().restWatt).forEach(function (device) {
-      //   secondTime.addDeviceForHour(device);
-      // });
+      if (!isFilterOneOff) {
+        addUniversalDevicesAndCheckForHours(devicesUniversalTimeOut(), firstTime); 
+      }
+
+      if (!isFilterTwoOff) {
+        addUniversalDevicesAndCheckForHours(twoHoursModeDevices(), secondTime); 
+      }
+
+          
+      let freeTime = firstTime,
+          devicesMain = freeTime === toDay ? devicesDay : devicesNight;
+
+      for (let i = 0; i < 4; i++) {
       
-      if (!isDayOff) {
-        if (!toDay.setNextHour()) {
-          isDayOff = true;
+        if (devicesMain.length > 0) {
+
+          maxEffectiveUsageInOur(devicesMain, freeTime.getFreeHourInfo().restWatt).forEach(function (device) { //add universal devices if we have a free power
+            if (!freeTime.checkDeviceInCurrentHour(device.id)) {
+              freeTime.addDeviceForHour(device);
+            }
+          });
+        }
+
+        if (i == 1) {
+          freeTime = secondTime;
+          devicesMain = freeTime === toDay ? devicesDay : devicesNight;
+        } else {
+
+          devicesMain = devicesUniversalRest();
+        }
+      }
+
+      
+      if (!isFilterOneOff) {
+        if (!firstTime.setNextHour()) {
+          isFilterOneOff = true;
           oneTimeMode = true;
         }
       }
       
-      if (!isNightOff) {
-        if (!toNight.setNextHour()) {
-          isNightOff = true;
+      if (!isFilterTwoOff) {
+        if (!secondTime.setNextHour()) {
+          isFilterTwoOff = true;
           oneTimeMode = true;
         }
       }
@@ -350,8 +351,24 @@ loadJSON(function(json) {
     }
   })();
 
-  document.body.innerHTML += "<h1>OUTPUT:</h1>";
-  document.body.innerHTML += JSON.stringify(day[1]);
-  console.log(toDay.getHours());
-  console.log(toNight.getHours());
+  let schedule = {},
+      consumedEnergy = {};
+      devicesList = {},
+      value = 0,
+      output = {};
+
+  devices.map(device => device).forEach(function (device) {
+    let deviceUsage = day.map(hour => hour.devices.includes(device.id) ? hour.hourCost : 0);
+    devicesList[`${device.id}`] = Number.parseFloat(Number.parseFloat(deviceUsage.reduce((a, b) => a + b, 0) * device.power).toPrecision(5));
+    value += devicesList[`${device.id}`];
+  });
+  day.forEach(function (hour) {
+    schedule[`${hour.hour}`] = hour.devices;
+  });
+
+  consumedEnergy.value = Number.parseFloat(Number.parseFloat(value).toPrecision(5));
+  consumedEnergy.devices = devicesList;
+
+  output.schedule = schedule;
+  output.consumedEnergy = consumedEnergy;
 });
